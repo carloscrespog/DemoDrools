@@ -1,0 +1,17 @@
+package com.sample
+ 
+
+
+declare Event
+	@role(event)
+end
+ 
+rule "Hello World"
+	when
+		$newEvent: Event() from entry-point entrada
+		
+	then
+		System.out.println("New Event received from: "+$newEvent.getSource() );
+end
+
+
