@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"mar",
+				"margin-left"
+			],
+			[
 				"new",
 				"newEvent"
 			],
@@ -283,7 +287,7 @@
 			"file": "views/composer.jade",
 			"settings":
 			{
-				"buffer_size": 600,
+				"buffer_size": 793,
 				"line_ending": "Unix"
 			}
 		},
@@ -291,7 +295,7 @@
 			"file": "views/index.jade",
 			"settings":
 			{
-				"buffer_size": 412,
+				"buffer_size": 540,
 				"line_ending": "Unix"
 			}
 		},
@@ -304,10 +308,29 @@
 			}
 		},
 		{
+			"contents": "\n/**\n * Module dependencies.\n */\n\nvar express = require('express')\n  , routes = require('./routes')\n  , user = require('./routes/user')\n  , http = require('http')\n  , path = require('path')\n  ,OAuth = require('oauth').OAuth\n  ,Twitter = require('twitter');\n\n\nvar app = express();\n\n\n\napp.configure(function(){\n  app.set('port', process.env.PORT || 3000);\n  app.set('views', __dirname + '/views');\n  app.set('view engine', 'jade');\n  app.use(express.favicon());\n  app.use(express.logger('dev'));\n  app.use(express.bodyParser());\n  app.use(express.methodOverride());\n  app.use(app.router);\n  app.use(express.static(path.join(__dirname, 'public')));\n});\n\napp.configure('development', function(){\n  app.use(express.errorHandler());\n\n});\n\napp.get('/', routes.index);\napp.get('/composer', routes.composer);\napp.get('/bot', routes.bot);\napp.get('/users', user.list);\n\nvar server=http.createServer(app).listen(app.get('port'), function(){\n  console.log(\"Express server listening on port \" + app.get('port'));\n});\n\n\n\n\n\n\n\napp.get('/post-tweet', function (req, res, next) {\n\n    var oauth, twitter;\n\n    twitter = new Twitter({\n      consumer_key: 'SDfRc6NHXJnO9Z3AHCt7bg',\n      consumer_secret: 'KLYo1vPcmlo1YhxZY9fbOhmwqu1jATLsWMOcqVXzM',\n      access_token_key: '1461415566-O9IkGQKqOawrIobnoz71TfPhjUyWmzZCuF4L4eE',\n      access_token_secret: 'bLrhaQDJ7hjNJLKPeTjzXl1TjaN4sNvdvxR1a0QBRE'\n    });\n\n    twitter.post('https://api.twitter.com/1.1/statuses/update.json',\n    {\n      status: req.query.tweet,\n      trim_user: 'true'\n    },\n    function (response) {\n      console.log(response);\n      if (response.id) {\n        res.send(response, 200);\n      } else {\n        res.send('There was a problem.', 400);\n      }\n    });\n\n           \n    \n});\n\n\nvar io = require('socket.io').listen(server);\nvar extSocket;\nio.on('connection', function (socket) {\n  extSocket=socket;\n  //socket.emit('news', { hello: 0 });\n  socket.on('hola', function (data) {\n    console.log(data);\n  });\n});\napp.post('/event',function(req,res){\n  //console.log(req.body.source);\n  extSocket.emit(req.body.source, { data: 1 });\n  res.setHeader('Access-Control-Allow-Origin', '*');\n  res.send(\"success\",200);\n});\n\napp.post('/light',function(req,res){\n    extSocket.emit('light', { data: req.body.value });\n    res.setHeader('Access-Control-Allow-Origin', '*');\n    res.send(\"success\",200);\n});\n\napp.post('/bot',function(req,res){\n  console.log(req.body);\n  console.log('----------');\n  extSocket.emit('bot', req.body.text);\n  res.setHeader('Access-Control-Allow-Origin', '*');\n  res.send(\"success\",200);\n});\n\n\n\napp.post('/drools',function(req,res){\n  extSocket.emit('Rule', req.body.rule);\n  //console.log(req.body);\n  res.setHeader('Access-Control-Allow-Origin', '*');\n  res.send(\"success\",200);\n});\n\n// var everyone = require(\"now\").initialize(server);\n\n// everyone.now.logStuff = function(msg){\n//     console.log(msg);\n// };\n",
 			"file": "app.js",
+			"file_size": 2889,
+			"file_write_time": 1369742470000000,
 			"settings":
 			{
-				"buffer_size": 1676,
+				"buffer_size": 2891,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "public/js/jquery.user.bot.js",
+			"settings":
+			{
+				"buffer_size": 536,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "views/bot.jade",
+			"settings":
+			{
+				"buffer_size": 288,
 				"line_ending": "Unix"
 			}
 		},
@@ -315,64 +338,73 @@
 			"file": "public/stylesheets/style.css",
 			"settings":
 			{
-				"buffer_size": 2169,
+				"buffer_size": 2791,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "public/js/jquery.user.js",
+			"file": "/Users/carloscrespog/Documents/Drivemotion-server/app.js",
 			"settings":
 			{
-				"buffer_size": 5710,
+				"buffer_size": 1735,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "public/js/jquery.user.events.js",
+			"file": "/Users/carloscrespog/Sites/Episteme/js/jquery.wizard.user.js",
 			"settings":
 			{
-				"buffer_size": 850,
+				"buffer_size": 8509,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/Users/carloscrespog/Documents/AmarettoApp/views/index.jade",
+			"file": "/Users/carloscrespog/Documents/Drivemotion-server/views/index.jade",
 			"settings":
 			{
-				"buffer_size": 5876,
+				"buffer_size": 1018,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/Users/carloscrespog/Documents/AmarettoApp/public/js/jquery.user.js",
+			"file": "/Users/carloscrespog/Downloads/mj-twitter.js",
 			"settings":
 			{
-				"buffer_size": 4142,
+				"buffer_size": 3113,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/Users/carloscrespog/Sites/Admin-interface/assets/js/user.js",
+			"file": "package.json",
 			"settings":
 			{
-				"buffer_size": 5352,
+				"buffer_size": 182,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/Users/carloscrespog/Documents/AmarettoApp/views/layout.jade",
+			"file": "/Users/carloscrespog/Documents/Drivemotion-server/views/layout.jade",
 			"settings":
 			{
-				"buffer_size": 569,
+				"buffer_size": 464,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/Users/carloscrespog/Documents/AmarettoApp/app.js",
+			"file": "/Users/carloscrespog/Documents/Drivemotion-server/public/js/jquery.user.js",
 			"settings":
 			{
-				"buffer_size": 8252,
+				"buffer_size": 1517,
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/carloscrespog/Documents/LSIN/Readme.txt",
+			"settings":
+			{
+				"buffer_size": 196,
+				"line_ending": "Unix",
+				"name": "Por motivos de exceso de tamaño del proyecto, este"
 			}
 		}
 	],
@@ -440,9 +472,21 @@
 	},
 	"file_history":
 	[
-		"/Users/carloscrespog/Documents/workspaceDrools/Prototype/NodeEvented/views/index.jade",
 		"/Users/carloscrespog/Documents/workspaceDrools/Prototype/NodeEvented/public/js/jquery.user.js",
+		"/Users/carloscrespog/Documents/workspaceDrools/Prototype/NodeEvented/public/js/jquery.user.events.js",
+		"/Users/carloscrespog/Documents/workspaceDrools/Prototype/NodeEvented/public/stylesheets/bubbles.css",
+		"/Users/carloscrespog/Documents/Drivemotion-server/public/stylesheets/style.css",
 		"/Users/carloscrespog/Documents/workspaceDrools/Prototype/NodeEvented/routes/index.js",
+		"/Users/carloscrespog/Documents/AmarettoApp/app.js",
+		"/Users/carloscrespog/Documents/AmarettoApp/views/layout.jade",
+		"/Users/carloscrespog/Sites/Admin-interface/assets/js/user.js",
+		"/Users/carloscrespog/Documents/AmarettoApp/public/js/jquery.user.js",
+		"/Users/carloscrespog/Documents/AmarettoApp/views/index.jade",
+		"/Users/carloscrespog/Documents/workspaceDrools/Prototype/NodeEvented/routes/user.js",
+		"/Users/carloscrespog/Documents/AmarettoApp/package.json",
+		"/Users/carloscrespog/Documents/AmarettoApp/Procfile",
+		"/Users/carloscrespog/Documents/Escroto Apps/rPI/Raspberry pi - Atos.md",
+		"/Users/carloscrespog/Documents/workspaceDrools/Prototype/NodeEvented/views/index.jade",
 		"/Users/carloscrespog/Documents/workspaceDrools/Prototype/NodeEvented/views/layout.jade",
 		"/Users/carloscrespog/Documents/workspaceDrools/Prototype/NodeEvented/NodeEvented.sublime-project",
 		"/Users/carloscrespog/Sites/Admin-interface/untitled.jade",
@@ -450,10 +494,8 @@
 		"/Users/carloscrespog/Documents/workspaceDrools/Prototype/NodeEvented/user.js",
 		"/Users/carloscrespog/Documents/workspaceDrools/Prototype/NodeEvented/index.html",
 		"/Users/carloscrespog/Documents/workspaceDrools/Prototype/NodeEvented/NodeEvented.js",
-		"/Users/carloscrespog/Documents/AmarettoApp/views/layout.jade",
 		"/Users/carloscrespog/Documents/Escroto Apps/rPI/eHealth.h",
 		"/Users/carloscrespog/Documents/Escroto Apps/rPI/eHealth.cpp",
-		"/Users/carloscrespog/Documents/Escroto Apps/rPI/Raspberry pi - Atos.md",
 		"/Users/carloscrespog/Documents/Escroto Apps/rPI/rfcommm.cpp",
 		"/Users/carloscrespog/Documents/Escroto Apps/rPI/arduPi_1-4/arduPi.h",
 		"/Users/carloscrespog/Documents/Escroto Apps/rPI/arduPi_1-4/arduPi_template.cpp",
@@ -472,14 +514,12 @@
 		"/Users/carloscrespog/Documents/Drools/jboss-as-7.1.1.Final/standalone/deployments/guvnor.war.failed",
 		"/Users/carloscrespog/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
 		"/Users/carloscrespog/Library/Application Support/Sublime Text 2/Packages/SublimeLinter/SublimeLinter.sublime-settings",
-		"/Users/carloscrespog/Documents/AmarettoApp/package.json",
 		"/Users/carloscrespog/Downloads/package.js",
 		"/Users/carloscrespog/Downloads/carrousel.html",
 		"/Users/carloscrespog/Documents/AmarettoApp/procfile",
 		"/Users/carloscrespog/Downloads/serial.txt",
 		"/Users/carloscrespog/Sites/Admin-interface/assets/css/bootstrap.css",
 		"/Users/carloscrespog/Sites/Episteme/js/jquery.wizard.user.js",
-		"/Users/carloscrespog/Sites/Admin-interface/assets/js/user.js",
 		"/Users/carloscrespog/Sites/Admin-interface/assets/js/myCategoriesjson.js",
 		"/Users/carloscrespog/Sites/Admin-interface/assets/js/myjson.js",
 		"/Users/carloscrespog/Sites/Admin-interface/assets/js/myOrderJson.js",
@@ -559,15 +599,7 @@
 		"/Users/carloscrespog/Documents/Scrappy/scrappy/elmundo.yarf",
 		"/Users/carloscrespog/Documents/Scrappy/outputs/www_elmundo_es-.rdf",
 		"/Users/carloscrespog/Documents/Scrappy/outputs/www_elmundo_es-elmundo-2012-11-26-gentes-1353940118_html.rdf",
-		"/Users/carloscrespog/Documents/Scrappy/outputs/www_elmundo_es-elmundo-2012-11-26-comunicacion-1353945952_html.rdf",
-		"/Users/carloscrespog/Documents/Scrappy/outputs/elmundo_orbyt_es-2012-11-26-orbyt_en_elmundo-1353929987_html.rdf",
-		"/Users/carloscrespog/Documents/Scrappy/outputs/ifttt_com-google_talk.rdf",
-		"/Users/carloscrespog/Documents/Scrappy/scrappy/extractors/ifttt2.yarf",
-		"/Users/carloscrespog/Documents/Scrappy/outputs/ifttt_com-channels-google_talk-actions-23.rdf",
-		"/Users/carloscrespog/Documents/Scrappy/outputs/ifttt_com-channels-google_talk-triggers-67.rdf",
-		"/Users/carloscrespog/Documents/Scrappy/ifttt.yarf",
-		"/Users/carloscrespog/Documents/Scrappy/outputs/ifttt_com-channels-google_talk-triggers-68.rdf",
-		"/Users/carloscrespog/Documents/Scrappy/outputs/ifttt-Tony/ifttt_com-channels-blogger-triggers-133.rdf"
+		"/Users/carloscrespog/Documents/Scrappy/outputs/www_elmundo_es-elmundo-2012-11-26-comunicacion-1353945952_html.rdf"
 	],
 	"find":
 	{
@@ -731,7 +763,7 @@
 	"groups":
 	[
 		{
-			"selected": 5,
+			"selected": 3,
 			"sheets":
 			[
 				{
@@ -739,15 +771,15 @@
 					"file": "views/composer.jade",
 					"settings":
 					{
-						"buffer_size": 600,
+						"buffer_size": 793,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								31,
-								31
+								68,
+								0
 							]
 						],
 						"settings":
@@ -859,15 +891,15 @@
 					"file": "views/index.jade",
 					"settings":
 					{
-						"buffer_size": 412,
+						"buffer_size": 540,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								32,
-								32
+								540,
+								540
 							]
 						],
 						"settings":
@@ -986,8 +1018,8 @@
 						"selection":
 						[
 							[
-								257,
-								257
+								38,
+								94
 							]
 						],
 						"settings":
@@ -1098,15 +1130,15 @@
 					"file": "app.js",
 					"settings":
 					{
-						"buffer_size": 1676,
+						"buffer_size": 2891,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1414,
-								1418
+								2571,
+								2571
 							]
 						],
 						"settings":
@@ -1209,267 +1241,25 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 445.0,
+						"translation.y": 1412.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 4,
-					"file": "public/stylesheets/style.css",
+					"file": "public/js/jquery.user.bot.js",
 					"settings":
 					{
-						"buffer_size": 2169,
+						"buffer_size": 536,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								237,
-								237
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"annotations":
-							[
-								"TODO",
-								"README",
-								"FIXME"
-							],
-							"bh_regions":
-							[
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close"
-							],
-							"gjslint_ignore":
-							[
-								110.0
-							],
-							"gjslint_options":
-							[
-							],
-							"javascript_linter": "jshint",
-							"jshint_options":
-							{
-								"browser": true,
-								"evil": true,
-								"regexdash": true,
-								"sub": true,
-								"trailing": true,
-								"wsh": true
-							},
-							"pep8_ignore":
-							[
-								"E501"
-							],
-							"pyflakes_ignore":
-							[
-							],
-							"pyflakes_ignore_import_*": true,
-							"sublimelinter": true,
-							"sublimelinter_delay": 0.0,
-							"sublimelinter_disable":
-							[
-							],
-							"sublimelinter_executable_map":
-							{
-							},
-							"sublimelinter_fill_outlines": false,
-							"sublimelinter_gutter_marks": false,
-							"sublimelinter_notes": false,
-							"sublimelinter_objj_check_ascii": false,
-							"sublimelinter_popup_errors_on_save": false,
-							"sublimelinter_syntax_map":
-							{
-								"Python Django": "python"
-							},
-							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/CSS/CSS.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 26.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "public/js/jquery.user.js",
-					"settings":
-					{
-						"buffer_size": 5710,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4822,
-								4822
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"annotations":
-							[
-								"TODO",
-								"README",
-								"FIXME"
-							],
-							"bh_regions":
-							[
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close"
-							],
-							"gjslint_ignore":
-							[
-								110.0
-							],
-							"gjslint_options":
-							[
-							],
-							"javascript_linter": "jshint",
-							"jshint_options":
-							{
-								"browser": true,
-								"evil": true,
-								"regexdash": true,
-								"sub": true,
-								"trailing": true,
-								"wsh": true
-							},
-							"pep8_ignore":
-							[
-								"E501"
-							],
-							"pyflakes_ignore":
-							[
-							],
-							"pyflakes_ignore_import_*": true,
-							"sublimelinter": true,
-							"sublimelinter_delay": 0.0,
-							"sublimelinter_disable":
-							[
-							],
-							"sublimelinter_executable_map":
-							{
-							},
-							"sublimelinter_fill_outlines": false,
-							"sublimelinter_gutter_marks": false,
-							"sublimelinter_notes": false,
-							"sublimelinter_objj_check_ascii": false,
-							"sublimelinter_popup_errors_on_save": false,
-							"sublimelinter_syntax_map":
-							{
-								"Python Django": "python"
-							},
-							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 262.0,
-						"translation.y": 3127.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "public/js/jquery.user.events.js",
-					"settings":
-					{
-						"buffer_size": 850,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								724,
-								724
+								218,
+								218
 							]
 						],
 						"settings":
@@ -1571,8 +1361,249 @@
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
+						"translation.x": 2.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "views/bot.jade",
+					"settings":
+					{
+						"buffer_size": 288,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								190,
+								190
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"is_xml": false,
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 0.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": false,
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"Python Django": "python"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/Jade/Syntaxes/Jade.tmLanguage"
+						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "public/stylesheets/style.css",
+					"settings":
+					{
+						"buffer_size": 2791,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								697,
+								697
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 0.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": false,
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"Python Django": "python"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 44.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1580,23 +1611,23 @@
 			]
 		},
 		{
-			"selected": 0,
+			"selected": 7,
 			"sheets":
 			[
 				{
 					"buffer": 7,
-					"file": "/Users/carloscrespog/Documents/AmarettoApp/views/index.jade",
+					"file": "/Users/carloscrespog/Documents/Drivemotion-server/app.js",
 					"settings":
 					{
-						"buffer_size": 5876,
+						"buffer_size": 1735,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2965,
-								2965
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1694,150 +1725,30 @@
 								"Python Django": "python"
 							},
 							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/Jade/Syntaxes/Jade.tmLanguage",
-							"tab_size": 4,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 278.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 8,
-					"file": "/Users/carloscrespog/Documents/AmarettoApp/public/js/jquery.user.js",
+					"file": "/Users/carloscrespog/Sites/Episteme/js/jquery.wizard.user.js",
 					"settings":
 					{
-						"buffer_size": 4142,
+						"buffer_size": 8509,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1623,
-								1623
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"annotations":
-							[
-								"TODO",
-								"README",
-								"FIXME"
-							],
-							"bh_regions":
-							[
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close"
-							],
-							"gjslint_ignore":
-							[
-								110.0
-							],
-							"gjslint_options":
-							[
-							],
-							"javascript_linter": "jshint",
-							"jshint_options":
-							{
-								"browser": true,
-								"evil": true,
-								"regexdash": true,
-								"sub": true,
-								"trailing": true,
-								"wsh": true
-							},
-							"pep8_ignore":
-							[
-								"E501"
-							],
-							"pyflakes_ignore":
-							[
-							],
-							"pyflakes_ignore_import_*": true,
-							"sublimelinter": true,
-							"sublimelinter_delay": 0.0,
-							"sublimelinter_disable":
-							[
-							],
-							"sublimelinter_executable_map":
-							{
-							},
-							"sublimelinter_fill_outlines": false,
-							"sublimelinter_gutter_marks": false,
-							"sublimelinter_notes": false,
-							"sublimelinter_objj_check_ascii": false,
-							"sublimelinter_popup_errors_on_save": false,
-							"sublimelinter_syntax_map":
-							{
-								"Python Django": "python"
-							},
-							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 1.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "/Users/carloscrespog/Sites/Admin-interface/assets/js/user.js",
-					"settings":
-					{
-						"buffer_size": 5352,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								449,
-								458
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1939,25 +1850,25 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 38.0,
+						"translation.y": 1460.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 10,
-					"file": "/Users/carloscrespog/Documents/AmarettoApp/views/layout.jade",
+					"buffer": 9,
+					"file": "/Users/carloscrespog/Documents/Drivemotion-server/views/index.jade",
 					"settings":
 					{
-						"buffer_size": 569,
+						"buffer_size": 1018,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								173,
-								343
+								0,
+								0
 							]
 						],
 						"settings":
@@ -2056,8 +1967,7 @@
 							},
 							"sublimelinter_wrap_find": true,
 							"syntax": "Packages/Jade/Syntaxes/Jade.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -2066,19 +1976,19 @@
 					"type": "text"
 				},
 				{
-					"buffer": 11,
-					"file": "/Users/carloscrespog/Documents/AmarettoApp/app.js",
+					"buffer": 10,
+					"file": "/Users/carloscrespog/Downloads/mj-twitter.js",
 					"settings":
 					{
-						"buffer_size": 8252,
+						"buffer_size": 3113,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								6946,
-								6924
+								917,
+								2975
 							]
 						],
 						"settings":
@@ -2181,7 +2091,489 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1447.0,
+						"translation.y": 980.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "package.json",
+					"settings":
+					{
+						"buffer_size": 182,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								176,
+								176
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 0.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": false,
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"Python Django": "python"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "/Users/carloscrespog/Documents/Drivemotion-server/views/layout.jade",
+					"settings":
+					{
+						"buffer_size": 464,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								372,
+								333
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 0.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": false,
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"Python Django": "python"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/Jade/Syntaxes/Jade.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "/Users/carloscrespog/Documents/Drivemotion-server/public/js/jquery.user.js",
+					"settings":
+					{
+						"buffer_size": 1517,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								991,
+								898
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 0.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": false,
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"Python Django": "python"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "/Users/carloscrespog/Documents/LSIN/Readme.txt",
+					"settings":
+					{
+						"buffer_size": 196,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								166,
+								166
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"auto_name": "Por motivos de exceso de tamaño del proyecto, este",
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"is_xml": false,
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 0.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": false,
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"Python Django": "python"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -2217,7 +2609,7 @@
 		"cols":
 		[
 			0.0,
-			0.5,
+			0.51411121251,
 			1.0
 		],
 		"rows":
